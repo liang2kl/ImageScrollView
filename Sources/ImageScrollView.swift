@@ -40,7 +40,7 @@ open class ImageScrollView: UIScrollView {
     private var scaleToRestoreAfterResize: CGFloat = 1.0
     open var maxScaleFromMinScale: CGFloat = 3.0
     
-    var didDoubleTapToScale = false
+    private var didDoubleTapToScale = false
     
     override open var frame: CGRect {
         willSet {
@@ -189,6 +189,7 @@ open class ImageScrollView: UIScrollView {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ImageScrollView.doubleTapGestureRecognizer(_:)))
         tapGesture.numberOfTapsRequired = 2
+        panGestureRecognizer.addTarget(self, action: #selector(panGestureDidPan))
         zoomView!.addGestureRecognizer(tapGesture)
         
         configureImageForSize(image.size)
@@ -264,6 +265,10 @@ open class ImageScrollView: UIScrollView {
             zoom(to: zoomRect, animated: true)
             didDoubleTapToScale = true
         }
+    }
+    
+    @objc private func panGestureDidPan() {
+        didDoubleTapToScale = false
     }
     
     private func zoomRectForScale(_ scale: CGFloat, center: CGPoint) -> CGRect {
