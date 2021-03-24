@@ -257,7 +257,7 @@ open class ImageScrollView: UIScrollView {
     
     @objc func doubleTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
         // zoom out if it bigger than middle scale point. Else, zoom in
-        if zoomScale >= minimumZoomScale * ImageScrollView.kZoomInFactorFromMinWhenDoubleTap {
+        if zoomScale >= minimumZoomScale * ImageScrollView.kZoomInFactorFromMinWhenDoubleTap - 0.01 {
             setZoomScale(minimumZoomScale, animated: true)
         }
         else {
