@@ -9,7 +9,7 @@
 import UIKit
 
 @objc public protocol ImageScrollViewDelegate: UIScrollViewDelegate {
-    func imageScrollViewDidChangeOrientation(imageScrollView: ImageScrollView)
+    func imageScrollViewDidChangeOrientation(imageScrollView: ImageScrollView) -> Bool
     func imageScrollViewDidIndicateDismiss()
 }
 
@@ -297,9 +297,11 @@ open class ImageScrollView: UIScrollView {
     
     @objc func changeOrientationNotification() {
         // A weird bug that frames are not update right after orientation changed. Need delay a little bit with async.
+        
         DispatchQueue.main.async {
-            self.configureImageForSize(self.imageSize)
-            self.imageScrollViewDelegate?.imageScrollViewDidChangeOrientation(imageScrollView: self)
+            if self.imageScrollViewDelegate?.imageScrollViewDidChangeOrientation(imageScrollView: self) ?? false {
+                self.configureImageForSize(self.imageSize)
+            }
         }
     }
 }
